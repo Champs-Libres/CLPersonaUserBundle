@@ -1,0 +1,23 @@
+{
+    "name": "champs-libres/persona-user-bundle",
+    "type": "symfony-bundle",
+    "description" : "This bundle brings authentication with the amazing [Persona system](https://www.mozilla.org/en-US/persona/) into symfony projects.  This bundle may be used by itself: you do not need to use another bundle. You may create users 'on the fly': they will simply click the 'login or register' button and will have (if you need it) a form.",
+    "keywords": ["User management", "Persona", "BrowserId", "Mozilla", "User"],
+    "homepage": "https://redmine.champs-libres.coop/projects/clpersonauserbundle",
+    "license" : "GPL-3.0+",
+    "authors" : [
+        { "name" : "Marc Ducobu", "email" : "marc.ducobu@champs-libres.coop"},
+        { "name" : "Julien Fastré", "email" : "julien.fastre@champs-libres.coop"}
+    ],
+    "minimum-stability" : "dev",
+    "require" :
+            {
+                "php": ">=5.4",
+                "symfony/framework-bundle" : "~2.3",
+                "symfony/security-bundle" : "~2.3"
+            },
+    "autoload": {
+        "psr-0": { "CL\\PersonaUserBundle": "" }
+    },
+    "target-dir": "CL/PersonaUserBundle"
+}
