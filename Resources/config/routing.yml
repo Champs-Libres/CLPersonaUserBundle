@@ -1,0 +1,23 @@
+cl_persona_user.login_check:
+    pattern: /persona_login_check
+    defaults: {_controller : CLPersonaUserBundle:Default:personaLoginCheck }
+    
+cl_persona_user.login:
+    pattern: /persona/login
+    defaults: {_controller: CLPersonaUserBundle:Default:personaLoginForm }
+    
+cl_persona_user.logout:
+    pattern: /persona/logout
+    defaults: {_controller: CLPersonaUserBundle:Default:personaLogout }
+    
+cl_persona_user.register.email_verification:
+    pattern: /persona/register
+    defaults: {_controller: CLPersonaUserBundle:Default:emailVerificationForm }
+    
+cl_persona_user.register.email_verification_check:
+    pattern: /rpersona/register_check
+    defaults: {_controller: CLPersonaUserBundle:Default:emailVerificationCheck }
+    
+cl_persona_user.register.dummy_logout:
+    pattern: /persona/logout
+    defaults: {_controller : CLPersonaUserBundle:Default:personaLogoutAction }

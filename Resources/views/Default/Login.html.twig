@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Login !{% endblock %}</title>
+        
+        {% stylesheets '@CLPersonaUserBundle/Resources/public/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        
+    </head>
+    <body>
+        <p>Login with persona</p>
+        <p>{{ persona_login_button() }}</p>
+        
+        <script type="text/javascript">
+            var personaLoginCheck = '{{ path('cl_persona_user.login_check') }}';
+            var personaLogout = '{{ path('cl_persona_user.logout') }}';
+        </script>
+            
+
+
+        <script src="https://login.persona.org/include.js"></script>
+        
+        {% javascripts '@CLPersonaUserBundle/Resources/public/js/jquery-1.11.0.js'
+                       '@CLPersonaUserBundle/Resources/public/js/persona_auth.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    </body>
+</html>
+

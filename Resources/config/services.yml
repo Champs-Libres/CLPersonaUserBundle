@@ -1,0 +1,37 @@
+services:
+            
+    cl_persona_user.security.authentication.provider.persona:
+        class: CL\PersonaUserBundle\Security\Provider\PersonaAuthenticationProvider
+        arguments: ["", "@cl_persona_user.services.persona"]
+        
+    cl_persona_user.security.persona.authentication.listener:
+        class: CL\PersonaUserBundle\Security\Listener\PersonaListener
+        arguments: 
+            personaService: "@cl_persona_user.services.persona"
+            authenticationManager: "@security.authentication.manager"
+            securityContext: "@security.context"
+            session: "@session"
+            router: "@router"
+            form: %cl_persona_user.route_not_existing_user%
+        
+    cl_persona_user.services.persona:
+        class: CL\PersonaUserBundle\Services\Persona\PersonaService
+        calls:
+          - [ setContainer,[ @service_container ] ]
+          
+    cl_persona_user.twig.persona_snippets:
+        class: CL\PersonaUserBundle\Twig\Extension\PersonaExtension
+        calls:
+          - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: twig.extension }
+            
+    cl_persona_user.twig.persona_helper:
+        class: CL\PersonaUserBundle\Templating\Helper\PersonaHelper
+        arguments:
+            templating: "@templating"
+            
+    cl_persona_user.manual_login:
+        class: CL\PersonaUserBundle\Services\Authentication\ManualAuthentication
+        calls:
+          - [ setContainer, [ @service_container ] ]
