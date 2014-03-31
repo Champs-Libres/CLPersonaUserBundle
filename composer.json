@@ -10,6 +10,7 @@
         { "name" : "Julien Fastré", "email" : "julien.fastre@champs-libres.coop"}
     ],
     "minimum-stability" : "dev",
+    "version": "1.0.0-dev",
     "require" :
             {
                 "php": ">=5.4",
