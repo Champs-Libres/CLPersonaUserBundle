@@ -23,7 +23,7 @@ class DefaultController extends Controller
 
         $response = new Response(json_encode(array(
            CLPersonaUserBundle::KEY_EMAIL_SESSION => 
-              $this->get('security.context')->getToken()->getUser()->getEmail()
+              $this->get('security.context')->getToken()->getUser()->getPersonaId()
         )));
         $response->setStatusCode(200);
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
