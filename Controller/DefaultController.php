@@ -17,6 +17,10 @@ class DefaultController extends Controller
     }
     
     public function personaLoginCheckAction() {
+        if ($this->get('security.context')->getToken()->getUser() === NULL) {
+           throw new \Exception('There are no user registered. Did you forget to create a firewall for /persona ?');
+        }
+
         $response = new Response(json_encode(array(
            CLPersonaUserBundle::KEY_EMAIL_SESSION => 
               $this->get('security.context')->getToken()->getUser()->getEmail()
