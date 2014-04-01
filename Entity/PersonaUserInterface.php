@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * 
  * @author julien.fastre@champs-libres.coop
  */
-interface PersonaUserInterface extends UserInterface {
+interface PersonaUserInterface {
     
     public function getPersonaId();
     
