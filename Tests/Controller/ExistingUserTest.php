@@ -22,17 +22,22 @@ class ExistingUserTest extends WebTestCase {
     protected $personaPass;
     
     
-    public function setUp() {
+    public static function getRegisteredTestUser() {
         $container = static::createClient()->getContainer();
         
-        $this->personaEmail = $container->getParameter('cl_persona_user.testing.username');
-        $this->personaPass = $container->getParameter('cl_persona_user.testing.password');
+        $personaEmail = $container->getParameter('cl_persona_user.testing.username');
+        $personaPass = $container->getParameter('cl_persona_user.testing.password');
+        
+        return array('personaId' => $personaEmail,
+           'personaPass' => $personaPass);
     }
+    
+    
     
     public function testLoginExistingUserIsOK() {
         $client = static::createClient();
         $client->request('GET', '/persona/login', array(
-           'assertion' => Helper::getPersonaAssertion(Helper::getPersonaTestUser())
+           'assertion' => Helper::getPersonaAssertion(static::getRegisteredTestUser())
         ));
         
         $response = $client->getResponse();

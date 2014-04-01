@@ -2,6 +2,8 @@
 
 namespace CL\PersonaUserBundle\Tests;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 /**
  * Static methods to run login tests with persona
  *
@@ -40,6 +42,8 @@ class LoginStaticHelper {
            'personaPass' => static::$personaPass);
     }
     
+    
+    
     public static function getPersonaAssertion(array $arrayPersonaIdPass) {
         
         
@@ -48,7 +52,7 @@ class LoginStaticHelper {
               .$arrayPersonaIdPass['personaId']."/"
               .$arrayPersonaIdPass['personaPass'];
         $curl = curl_init($url);
-        
+
         //response as string
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         
@@ -59,11 +63,14 @@ class LoginStaticHelper {
         
         //handle response
         $responseObject = json_decode($response);
+
         return $responseObject->assertion;
     }
     
-    public static function getAuthenticatedClient($createNew = false) {
-        if ($createNew === true OR static::$authenticatedClient === NULL) {
+    public static function getAuthenticatedClient(array $arrayPersonaIdPass, 
+          $createNew = false) {
+        if ($createNew === true 
+              OR static::$authenticatedClient[$arrayPersonaIdPass['personaId']] === NULL) {
             $client = static::createClient();
             $client->request('GET', '/persona/login', array(
                'assertion' => static::getPersonaAssertion(
@@ -72,14 +79,14 @@ class LoginStaticHelper {
             ));
             
             //store the client in static resource if not exists
-            if (static::$authenticatedClient === NULL) {
-                static::$authenticatedClient = $client;
+            if (static::$authenticatedClient[$arrayPersonaIdPass['personaId']] === NULL) {
+                static::$authenticatedClient[$arrayPersonaIdPass['personaId']] = $client;
             }
             
             return $client;
         }
         
-        return static::$authenticatedClient;
+        return static::$authenticatedClient[$arrayPersonaIdPass['personaId']];
     }
     
 }
