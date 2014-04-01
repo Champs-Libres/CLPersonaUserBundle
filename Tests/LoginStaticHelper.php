@@ -67,26 +67,5 @@ class LoginStaticHelper {
         return $responseObject->assertion;
     }
     
-    public static function getAuthenticatedClient(array $arrayPersonaIdPass, 
-          $createNew = false) {
-        if ($createNew === true 
-              OR static::$authenticatedClient[$arrayPersonaIdPass['personaId']] === NULL) {
-            $client = static::createClient();
-            $client->request('GET', '/persona/login', array(
-               'assertion' => static::getPersonaAssertion(
-                     static::getPersonaTestUser()
-                     )
-            ));
-            
-            //store the client in static resource if not exists
-            if (static::$authenticatedClient[$arrayPersonaIdPass['personaId']] === NULL) {
-                static::$authenticatedClient[$arrayPersonaIdPass['personaId']] = $client;
-            }
-            
-            return $client;
-        }
-        
-        return static::$authenticatedClient[$arrayPersonaIdPass['personaId']];
-    }
     
 }
