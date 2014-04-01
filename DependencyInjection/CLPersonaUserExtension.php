@@ -27,11 +27,21 @@ class CLPersonaUserExtension extends Extension
         $container->setParameter('cl_persona_user.route_not_existing_user', 
               $config['route_not_existing_user']);
         
-        //for tests, set default parameters
-        $container->setParameter('cl_persona_user.testing.username', 
-              $config['testing']['username']);
-        $container->setParameter('cl_persona_user.testing.password', 
-              $config['testing']['password']);
+        //for tests, set parameters from config.yml
+        if (isset($config['testing']['username'])) {
+            $container->setParameter('cl_persona_user.testing.username', 
+                  $config['testing']['username']);
+        } else {
+            $container->setParameter('cl_persona_user.testing.username', null);
+        }
+        
+        if (isset($config['testing']['password'])) {
+            $container->setParameter('cl_persona_user.testing.password', 
+                  $config['testing']['password']);
+        } else {
+            $container->setParameter('cl_persona_user.testing.password', null);
+
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
