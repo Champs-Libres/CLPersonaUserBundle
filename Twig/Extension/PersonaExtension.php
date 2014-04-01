@@ -2,8 +2,11 @@
 
 /*
  * This file is part of the BGPersonaBundle package.
+ * 
+ * It was copied by Champs Libres and integrated into CLPersonaUserBundle.
  *
  * (c) bitgrave <http://bitgrave.github.com/>
+ * (c) Champs Libres <http://www.champs-libres.coop>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.

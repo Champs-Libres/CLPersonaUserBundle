@@ -26,6 +26,8 @@ class PersonaService implements ContainerAwareInterface {
     /**
      * @return array the result of authentication
      * @throws PersonaAuthenticationFailedException if the authentication fail. The message get the reason.
+     * @throws PersonaAuthenticationNoAssertionException if no assertion were found
+     * @param string|null $assertion the assertion string. If not provided, the assertion is retrieved from the URL
      */
     public function performAuthentication($assertion = null) {
         $request = $this->container->get('request');

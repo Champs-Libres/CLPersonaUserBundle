@@ -2,11 +2,11 @@
 
 namespace CL\PersonaUserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 /**
  * user entity provided by PersonaUserInterface must implements
- * PersonaUserInterface, which extends UserInterface
+ * PersonaUserInterface, 
  * 
  * @author julien.fastre@champs-libres.coop
  */

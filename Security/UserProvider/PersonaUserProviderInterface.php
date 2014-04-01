@@ -17,6 +17,7 @@ interface PersonaUserProviderInterface extends UserProviderInterface {
      * 
      * @param string $personaId The persona id (email address)
      * @return \Symfony\Component\Security\Core\User\UserInterface
+     * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException if no users found
      */
     public function loadUserByPersonaId($personaId);
     

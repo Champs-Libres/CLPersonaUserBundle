@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use CL\PersonaUserBundle\Services\Persona\PersonaAuthenticationFailedException;
 use CL\PersonaUserBundle\CLPersonaUserBundle;
 
+/**
+ * Basic controller that handle operation of login / logout
+ */
 class DefaultController extends Controller
 {    
     

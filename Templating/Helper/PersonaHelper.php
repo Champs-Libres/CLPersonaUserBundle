@@ -29,20 +29,7 @@ class PersonaHelper extends Helper
 //        $this->scope       = $scope;
     }
 
-//    /**
-//     * setup the initializing params for persona auth implementation
-//     *
-//     * @param array  $parameters An array of parameters for the initialization template
-//     * @param string $name       A template name
-//     *
-//     * @return string An HTML string
-//     */
-//    public function initialize($parameters = array(), $name = null)
-//    {
-//        $name = $name ?: 'BGPersonaBundle::initialize.html.twig';
-//        return $this->templating->render($name, $parameters + array(
-//        ));
-//    }
+
 
     /**
      * setup the login/logoutButton params for persona auth implementation
