@@ -24,20 +24,4 @@ class PersonaUserToken extends AbstractToken {
         return $this->getUser()->getCredentials();
     }
     
-    public function setUser($user) {
-        parent::setUser($user);
-        
-        //add roles 
-        $roles = $user->getRoles();
-        foreach ($roles as $role) {
-            if (is_string($role)) {
-                $role = new Role($role);
-            } elseif (!$role instanceof RoleInterface) {
-                throw new \InvalidArgumentException(sprintf('$roles must be an array of strings, or RoleInterface instances, but got %s.', gettype($role)));
-            }
-
-            $this->roles[] = $role;
-        }
-    }
-
 }

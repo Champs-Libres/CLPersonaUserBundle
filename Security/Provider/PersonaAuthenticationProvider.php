@@ -80,11 +80,14 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
         
         if ($this->validate($token)) {
             
-            $token->setUser($user);
-            $token->setAuthenticated(TRUE);
-//            $authToken = new PersonaUserToken($roles);
-//            $authToken->setUser($user);
-            return $token;
+            $newToken = new PersonaUserToken($user->getRoles());
+            $newToken->setUser($user);
+            $newToken->audience = $token->audience;
+            $newToken->email = $token->email;
+            $newToken->expire = $token->expire;
+            $newToken->issuer = $token->issuer;
+            
+            return $newToken;
             
         }
         
