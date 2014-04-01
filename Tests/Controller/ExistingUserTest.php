@@ -23,15 +23,10 @@ class ExistingUserTest extends WebTestCase {
     
     
     public function setUp() {
-        if (!file_exists(__DIR__.'/../Resources/user.php')) {
-            throw new \Exception('The file '.__DIR__.'./../Resources/user.php'
-                  . ' is not found. Did you copy user.php.dist ?');
-        }
+        $container = static::createClient()->getContainer();
         
-        require(__DIR__.'/../Resources/user.php');
-        
-        $this->personaEmail = $user;
-        $this->personaPass = $pass;
+        $this->personaEmail = $container->getParameter('cl_persona_user.testing.username');
+        $this->personaPass = $container->getParameter('cl_persona_user.testing.password');
     }
     
     public function testLoginExistingUserIsOK() {

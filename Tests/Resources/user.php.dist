@@ -1,4 +1,0 @@
-<?php 
-
-$user = 'userid@personatestuser.org';
-$pass = 'pass';
