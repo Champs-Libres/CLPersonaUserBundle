@@ -3,9 +3,9 @@ CLPersonaUserBundle
 
 This bundle brigns authentication with the amazing [Persona system](https://www.mozilla.org/en-US/persona/) into symfony projects.
 
-This bundle may be used by itself: you do not need to use another bundle. 
+This bundle may be used alone: you do not need to use another bundle. 
 
-You may create users "on the fly": they will simply click the "login or register" button and will have (if you need it) a form.
+You may create users "on the fly": they will simply click the "sign in with persona" button and the magic is done !
 
 Installation
 ============
@@ -68,8 +68,18 @@ assetic:
 Configure the bundle
 ---------------------
 
+Add the required routes to your bundle :
 
-You must add the required option to your `config.yml` file : 
+```yml
+#app/routing.yml
+
+CLPersonaUserBundle:
+        resource: "@CLPersonaUserBundle/Resources/config/routing.yml"
+        prefix:   /
+
+```
+
+You must also add the required options to your `config.yml` file : 
 
 ```
 cl_persona_user:
@@ -296,6 +306,9 @@ security:
         my_other_part:
             pattern: ^/my_part
             context: my_context #this will link to the context of persona.
+            logout:
+                path: /persona/logout #you may replace this
+                target: /persona/login #you may replace this
 
 ```
             
@@ -304,7 +317,7 @@ Add a method to register new users
 
 When a user login for the first time, you must create an account and profile in the database, or block the registration.
 
-Every time a not-existing-user connects, the javascript will redirect to the URL defined in `cl_persona_user.route_not_existing_user`, in `config.yml`. It is your responsability to do whatever you want with new users.
+Every time a not-existing-user connects, the javascript will redirect to the URL defined in `cl_persona_user.route_not_existing_user`, in `config.yml`. It is your responsability to do whatever you want with new users : display a new form, directly register the user, ...
 
 The persona id's new user is stored in the session and is available within your controllers.
 
@@ -326,6 +339,10 @@ The controller :
 
 class DefaultController extends Controller {
 
+    /*
+     * Here we will display a form to ask some information, 
+     * and then deals with this form
+     */
     public function registerAction(Request $request) {
         $emailRecorded = $this->get('session')
               ->get(CLPersonaUserBundle::KEY_EMAIL_SESSION, null);
@@ -372,6 +389,8 @@ class DefaultController extends Controller {
 Twig templates and javascripts files
 ====================================
 
+You may use the `/persona/login` route for your bundle, or add a "login with persona" button on each page.
+
 Every time you offers the possibility to login with Persona, you must manually add the following scripts :
 
 ```html
@@ -406,7 +425,7 @@ Every time you offers the possibility to login with Persona, you must manually a
         <!-- THOSE VARIABLES ARE NEEDED FOR THE ADAPTATION OF THE js SCRIPT BELOW -->
         <script type="text/javascript">
             var personaLoginCheck = '{{ path('cl_persona_user.login_check') }}';
-            var personaLogout = '{{ path('cl_persona_user.logout') }}';
+            var personaLogout = '{{ path('cl_persona_user.logout') }}'; //replace with another logout route if needed
         </script>
         
      <!-- needed by persona ! -->
