@@ -441,6 +441,33 @@ Every time you offers the possibility to login with Persona, you must manually a
 Test
 -----
 
-You may test user in your application.
+You may test user and persona login in your application. We use the http://personatestuser.org service. Be aware that the lifetime of created user is short.
 
+Those static methods are available
 
+- `CL\PersonaUserBundle\Tests\Controller\ExistingUserTest::getRegisteredTestUser()` to get an array : `array('personaId' => $personaEmail, 'personaPass' => $personaPass)`, which contains the user and pass available in configuration (you must fill the configuration)
+- `CL\PersonaUserBundle\Tests\LoginStaticHelper::getPersonaAssertion(array $arrayPersonaIdPass)` to get an assertion
+
+You may authenticate a client inside your tests controllers with : 
+
+```php
+
+use CL\PersonaUserBundle\Tests\LoginStaticHelper as Helper;
+
+$client = static::createClient();
+$client->request('GET', '/persona/login', array(
+           'assertion' => Helper::getPersonaAssertion(static::getRegisteredTestUser())
+        ));
+
+```
+
+The configuration needed for `CL\PersonaUserBundle\Tests\Controller\ExistingUserTest::getRegisteredTestUser()` is : 
+
+```yml
+#app/config_test.yml
+
+cl_persona_user:
+    testing:
+        username: %persona_test_user_username% #from parameters.yml
+        password: %persona_test_user_password% #from parameters.yml
+```
