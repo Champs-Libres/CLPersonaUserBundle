@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Bridge\Monolog\Logger;
 
 use CL\PersonaUserBundle\Security\Token\PersonaUserToken;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -33,10 +34,17 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
      */
     private $personaService;
     
+    /**
+     *
+     * @var Symfony\Bridge\Monolog\Logger
+     */
+    private $logger;
+    
     public function __construct(UserProviderInterface $userProvider, 
-        PersonaService $personaService) {
+        PersonaService $personaService, Logger $logger) {
         $this->userProvider = $userProvider;
         $this->personaService = $personaService;
+        $this->logger = $logger;
     }
     
     
@@ -68,8 +76,10 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
             throw new PersonaIdNotExistingException($res['email'], 'persona Id'
                   . ' still does not exist', 0, $ex);
         } catch (\Exception $ex) {
-            throw new AuthenticationException('error loading user by persona',
+            $err =  new AuthenticationException('error loading user by persona',
                   0, $ex);
+            $this->logger->err($err->getTraceAsString());
+            throw $err;
         }
         
         

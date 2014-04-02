@@ -2,7 +2,7 @@ services:
             
     cl_persona_user.security.authentication.provider.persona:
         class: CL\PersonaUserBundle\Security\Provider\PersonaAuthenticationProvider
-        arguments: ["", "@cl_persona_user.services.persona"]
+        arguments: ["", "@cl_persona_user.services.persona", "@logger"]
         
     cl_persona_user.security.persona.authentication.listener:
         class: CL\PersonaUserBundle\Security\Listener\PersonaListener
