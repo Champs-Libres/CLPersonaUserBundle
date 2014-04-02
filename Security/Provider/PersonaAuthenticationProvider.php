@@ -34,17 +34,11 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
      */
     private $personaService;
     
-    /**
-     *
-     * @var Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
     
     public function __construct(UserProviderInterface $userProvider, 
-        PersonaService $personaService, Logger $logger) {
+        PersonaService $personaService) {
         $this->userProvider = $userProvider;
         $this->personaService = $personaService;
-        $this->logger = $logger;
     }
     
     
@@ -75,12 +69,7 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
         } catch (UsernameNotFoundException $ex) {
             throw new PersonaIdNotExistingException($res['email'], 'persona Id'
                   . ' still does not exist', 0, $ex);
-        } catch (\Exception $ex) {
-            $err =  new AuthenticationException('error loading user by persona',
-                  0, $ex);
-            $this->logger->err($err->getTraceAsString());
-            throw $err;
-        }
+        } 
         
         
         if ($user === NULL) {
