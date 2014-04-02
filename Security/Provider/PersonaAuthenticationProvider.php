@@ -74,8 +74,8 @@ class PersonaAuthenticationProvider implements AuthenticationProviderInterface {
         
         
         if ($user === NULL) {
-            throw new AuthenticationException('user with persona token'.
-                    $token->email.' not found');
+            throw new AuthenticationException('could not authenticate user with personaid'.
+                    $token->email.'.');
         }
         
         if ($this->validate($token)) {
