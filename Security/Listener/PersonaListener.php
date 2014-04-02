@@ -121,12 +121,8 @@ class PersonaListener implements ListenerInterface {
             }
             
         } else {
-            return;
+            $event->setResponse($this->getResponseForbidden("no assertion parameter:listener"));
         }
-        
-        //if no assertion
-        $event->setResponse($this->getResponseForbidden("no assertion parameter"));
-
     }
 
     
