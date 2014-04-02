@@ -35,9 +35,8 @@ class ManualAuthentication implements ContainerAwareInterface{
     
     public function authenticate(UserInterface $user) {
         //authenticate the user
-        $token = new \CL\PersonaUserBundle\Security\Token\PersonaUserToken();
+        $token = new \CL\PersonaUserBundle\Security\Token\PersonaUserToken($user->getRoles());
         $token->setUser($user);
-        $token->setAuthenticated(true);
         $token->email = $user->getUsername();
 
         $this->securityContext->setToken($token);
