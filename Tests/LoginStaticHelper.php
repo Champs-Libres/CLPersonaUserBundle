@@ -36,6 +36,11 @@ class LoginStaticHelper {
                 static::$personaPass = $responseObject->pass;
             }
             
+            if($createNew === TRUE) {
+               return array('personaId' => $responseObject->email,
+                  'personaPass' => $responseObject->pass);
+            }
+            
         }
 
         return array('personaId' => static::$personaId,
