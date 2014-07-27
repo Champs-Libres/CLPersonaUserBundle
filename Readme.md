@@ -190,7 +190,7 @@ interface PersonaUserProviderInterface extends UserProviderInterface {
 
 Here is an example of an UserProvider implementation:
 
-``php
+```php
 
 namespace MyBundle\Security\Provider;
 
