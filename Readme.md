@@ -421,12 +421,6 @@ Every time you offers the possibility to login with Persona, you must manually a
 
      <!-- for persona login -->
         
-
-        <!-- THOSE VARIABLES ARE NEEDED FOR THE ADAPTATION OF THE js SCRIPT BELOW -->
-        <script type="text/javascript">
-            var personaLoginCheck = '{{ path('cl_persona_user.login_check') }}';
-            var personaLogout = '{{ path('cl_persona_user.logout') }}'; //replace with another logout route if needed
-        </script>
         
      <!-- needed by persona ! -->
         <script src="https://login.persona.org/include.js"></script>
@@ -434,6 +428,16 @@ Every time you offers the possibility to login with Persona, you must manually a
         {% javascripts '@CLPersonaUserBundle/Resources/public/js/persona_auth.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+
+     <!-- loading persona -->
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                var persona_login_check = '{{ path('cl_persona_user.login_check') }}';
+                var persona_logout = '{{ path('cl_persona_user.logout') }}';
+
+                enablePersonaAuth(persona_login_check, persona_logout);
+            })
+        </script>
 
 ```
 

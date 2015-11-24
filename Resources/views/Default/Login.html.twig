@@ -12,13 +12,6 @@
     <body>
         <p>Login with persona</p>
         <p>{{ persona_login_button() }}</p>
-        
-        <script type="text/javascript">
-            var personaLoginCheck = '{{ path('cl_persona_user.login_check') }}';
-            var personaLogout = '{{ path('cl_persona_user.logout') }}';
-        </script>
-            
-
 
         <script src="https://login.persona.org/include.js"></script>
         
@@ -26,6 +19,15 @@
                        '@CLPersonaUserBundle/Resources/public/js/persona_auth.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                var persona_login_check = '{{ path('cl_persona_user.login_check') }}';
+                var persona_logout = '{{ path('cl_persona_user.logout') }}';
+
+                enablePersonaAuth(persona_login_check, persona_logout);
+            })
+        </script>
     </body>
 </html>
 
