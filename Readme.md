@@ -3,9 +3,14 @@ CLPersonaUserBundle
 
 This bundle brigns authentication with the amazing [Persona system](https://www.mozilla.org/en-US/persona/) into symfony projects.
 
-This bundle may be used alone: you do not need to use another bundle. 
+This bundle may be used alone: you do not need to use another bundle.
 
 You may create users "on the fly": they will simply click the "sign in with persona" button and the magic is done !
+
+Requirement
+===========
+
+Install & enable the extension ext/curl in your PHP installation.
 
 Installation
 ============
@@ -13,7 +18,7 @@ Installation
 Download with composer
 ----------------------
 
-Add the following line to your `composer.json` file : 
+Add the following line to your `composer.json` file :
 
 ```json
 
@@ -79,7 +84,7 @@ CLPersonaUserBundle:
 
 ```
 
-You must also add the required options to your `config.yml` file : 
+You must also add the required options to your `config.yml` file :
 
 ```
 cl_persona_user:
@@ -95,7 +100,7 @@ Implements both  `CL\PersonaUserBundle\Entity\PersonaUserInterface` and `Symfony
 
 If you do not use another way of login, you may leave blank the function needed for 'symfony' user interfaces. You may, then, use your user interface with another user bundle.
 
-Example of an User class: 
+Example of an User class:
 
 ```php
 
@@ -112,9 +117,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @author julien
  */
 class User implements PersonaUserInterface, \Serializable, UserInterface {
-    
+
     private $email = '';
-    
+
     /**
      * @var integer
      */
@@ -125,15 +130,15 @@ class User implements PersonaUserInterface, \Serializable, UserInterface {
      */
     private $label = '';
 
-    
+
     /**
      * @var string[]
      */
     private $roles = array('ROLE_USER');
-    
-    
+
+
     public function eraseCredentials() {
-        
+
     }
 
     public function getPassword() {
@@ -166,24 +171,24 @@ class User implements PersonaUserInterface, \Serializable, UserInterface {
 Create an UserProvider
 -----------------------
 
-You must create an user provider, which is an implementation of 
+You must create an user provider, which is an implementation of
 `CL\PersonaUserBundle\Security\UserProvider\PersonaUserProviderInterface`.
 
-`CL\PersonaUserBundle\Security\UserProvider\PersonaUserProviderInterface` extends 
+`CL\PersonaUserBundle\Security\UserProvider\PersonaUserProviderInterface` extends
 `Symfony\Component\Security\Core\User\UserProviderInterface` and add one method. Here is how the interface is defined :
 
 ```php
 
 interface PersonaUserProviderInterface extends UserProviderInterface {
-    
+
     /**
      * Load user by the persona Id
-     * 
+     *
      * @param string $personaId The persona id (email address)
      * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     public function loadUserByPersonaId($personaId);
-    
+
 }
 
 ```
@@ -202,41 +207,41 @@ use CL\PersonaUserBundle\Security\Provider\PersonaIdNotExistingException;
 /**
  * Example of an UserProvider Implementation
  *
- * 
+ *
  */
 class UserProvider implements PersonaUserProviderInterface {
-    
+
     private $em;
-    
-    
+
+
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
-    
-    
-    
+
+
+
     public function loadUserByPersonaId($personaId) {
         $user = $this->em->getRepository('MyBundle:User')
                 ->findOneBy(array('personaId' => $personaId));
-        
+
         if ($user === null) {
             throw new UsernameNotFoundException($personaId);
         }
-        
-        
+
+
         return $user;
     }
 
     public function loadUserByUsername($username) {
         $user = $this->em->getRepository('MyBundle:User')
                 ->findBy(array('username' => $username));
-        
+
         if ($user === null) {
             throw new UsernameNotFoundException("The user with username "
                     . $username . " is not found");
         }
-        
-        
+
+
         return $user;
     }
 
@@ -245,7 +250,7 @@ class UserProvider implements PersonaUserProviderInterface {
             throw new UnsupportedUserException('class '.get_class($user).
                   " is not supported by ".get_class($this));
         }
-        
+
         try {
             return $this->em->getRepository('MyBundle:User')
                   ->find($user->getId());
@@ -311,7 +316,7 @@ security:
                 target: /persona/login #you may replace this
 
 ```
-            
+
 Add a method to register new users
 ----------------------------------
 
@@ -325,7 +330,7 @@ A lot of people will registre new user and persist them in the database. If you 
 
 For instance :
 
-The route : 
+The route :
 
 ```yml
 my_bundle.register_user:
@@ -333,29 +338,29 @@ my_bundle.register_user:
     defaults: { _controller: MyBundle:Default:register }
 ```
 
-The controller : 
+The controller :
 
-```php 
+```php
 
 class DefaultController extends Controller {
 
     /*
-     * Here we will display a form to ask some information, 
+     * Here we will display a form to ask some information,
      * and then deals with this form
      */
     public function registerAction(Request $request) {
         $emailRecorded = $this->get('session')
               ->get(CLPersonaUserBundle::KEY_EMAIL_SESSION, null);
-        
+
         if ($emailRecorded === NULL) {
             $response = new Response("You must authenticate with persona first!");
             $response->setStatusCode(Response::HTTP_NOT_ACCEPTABLE);
             return $response;
         }
-        
+
         $user = new User();
         $user->setUsername($emailRecorded); #username must match persona Id!
-        
+
         $form = $this->createForm(new UserType(), $user);
 
         if ($request->getMethod() === 'POST') {
@@ -366,14 +371,14 @@ class DefaultController extends Controller {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                
+
                 #Authenticate the user immediatly
                 $this->get('cl_persona_user.manual_login')
                       ->authenticate($user);
 
                 return $this->redirect(
                       $this->generateUrl('my_bundle.registration_confirmed'));
-            } 
+            }
         }
 
         return $this->render('CLCyclabiliteUserBundle:Register:form.html.twig', array(
@@ -401,7 +406,7 @@ Every time you offers the possibility to login with Persona, you must manually a
         {% stylesheets '@CLPersonaUserBundle/Resources/public/css/*' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-        
+
         <!-- you must add jquery somwhere in the page, or use the 1.11 version provided with the script. Do not hesitate to replace it. -->
         {% javascripts '@CLPersonaUserBundle/Resources/public/js/jquery-1.11.0.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -420,8 +425,8 @@ Every time you offers the possibility to login with Persona, you must manually a
 
 
      <!-- for persona login -->
-        
-        
+
+
      <!-- needed by persona ! -->
         <script src="https://login.persona.org/include.js"></script>
      <!-- the script we develop. This script will reload the page after login. You may create your own -->  
@@ -452,7 +457,7 @@ Those static methods are available
 - `CL\PersonaUserBundle\Tests\Controller\ExistingUserTest::getRegisteredTestUser()` to get an array : `array('personaId' => $personaEmail, 'personaPass' => $personaPass)`, which contains the user and pass available in configuration (you must fill the configuration)
 - `CL\PersonaUserBundle\Tests\LoginStaticHelper::getPersonaAssertion(array $arrayPersonaIdPass)` to get an assertion
 
-You may authenticate a client inside your tests controllers with : 
+You may authenticate a client inside your tests controllers with :
 
 ```php
 
@@ -465,7 +470,7 @@ $client->request('GET', '/persona/login', array(
 
 ```
 
-The configuration needed for `CL\PersonaUserBundle\Tests\Controller\ExistingUserTest::getRegisteredTestUser()` is : 
+The configuration needed for `CL\PersonaUserBundle\Tests\Controller\ExistingUserTest::getRegisteredTestUser()` is :
 
 ```yml
 #app/config_test.yml
